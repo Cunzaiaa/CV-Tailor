@@ -1,0 +1,155 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
+:root {
+  --brand-from: 99 102 241;   /* indigo-500  */
+  --brand-via: 139 92 246;    /* violet-500  */
+  --brand-to: 217 70 239;     /* fuchsia-500 */
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #fafafa;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+textarea {
+  resize: vertical;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--brand-via));
+  outline-offset: 2px;
+}
+
+/* ── Utilities ─────────────────────────────────────────────────────────────── */
+
+/* Brand gradient text */
+.text-gradient {
+  background-image: linear-gradient(
+    100deg,
+    rgb(var(--brand-from)),
+    rgb(var(--brand-via)),
+    rgb(var(--brand-to))
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Brand gradient background */
+.bg-brand-gradient {
+  background-image: linear-gradient(
+    100deg,
+    rgb(var(--brand-from)),
+    rgb(var(--brand-via)),
+    rgb(var(--brand-to))
+  );
+}
+
+/* Animated shimmer over the brand gradient (for buttons) */
+.bg-brand-gradient-animated {
+  background-image: linear-gradient(
+    100deg,
+    rgb(var(--brand-from)),
+    rgb(var(--brand-via)),
+    rgb(var(--brand-to)),
+    rgb(var(--brand-via)),
+    rgb(var(--brand-from))
+  );
+  background-size: 200% 100%;
+  animation: gradient-pan 6s linear infinite;
+}
+
+/* Glass surface */
+.glass {
+  background-color: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+}
+
+/* Decorative blurred blob */
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Soft elevated card shadow */
+.shadow-soft {
+  box-shadow:
+    0 1px 2px rgba(24, 24, 27, 0.04),
+    0 8px 24px -12px rgba(24, 24, 27, 0.12);
+}
+
+.shadow-glow {
+  box-shadow:
+    0 10px 30px -12px rgba(139, 92, 246, 0.45),
+    0 4px 12px -6px rgba(217, 70, 239, 0.35);
+}
+
+/* ── Keyframes ─────────────────────────────────────────────────────────────── */
+@keyframes progress {
+  0% { width: 0%; }
+  50% { width: 70%; }
+  90% { width: 90%; }
+  100% { width: 95%; }
+}
+
+.animate-progress {
+  animation: progress 30s ease-out forwards;
+}
+
+@keyframes gradient-pan {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(20px, -30px) scale(1.08); }
+}
+
+@keyframes float-slow-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-25px, 20px) scale(1.12); }
+}
+
+.animate-float {
+  animation: float-slow 14s ease-in-out infinite;
+}
+
+.animate-float-2 {
+  animation: float-slow-2 18s ease-in-out infinite;
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-float-2,
+  .animate-fade-up,
+  .bg-brand-gradient-animated {
+    animation: none;
+  }
+}
