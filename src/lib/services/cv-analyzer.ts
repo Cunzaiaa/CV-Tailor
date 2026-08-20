@@ -13,8 +13,14 @@ import { buildCVExtractionPrompt } from '@/lib/prompts/cv-extraction';
 import { ParsedCVSchema } from '@/lib/schemas/cv';
 import type { ParsedCV } from '@/types';
 import { safeJsonParse } from '@/lib/utils';
+import { cacheKey, getOrCompute } from '@/lib/cache';
 
-export async function analyzeCV(cvText: string): Promise<ParsedCV> {
+// Cached by CV text so the questions round-trip reuses the first analysis.
+export function analyzeCV(cvText: string): Promise<ParsedCV> {
+  return getOrCompute(cacheKey('analyzeCV', cvText), () => runAnalyzeCV(cvText));
+}
+
+async function runAnalyzeCV(cvText: string): Promise<ParsedCV> {
   const prompt = buildCVExtractionPrompt(cvText); // 1. Build the instruction prompt
   const rawResponse = await geminiGenerate(prompt); // 2. Ask the AI
 

@@ -10,12 +10,15 @@ import { truncateText } from '@/lib/utils';
  * Parse a PDF buffer and extract its text content.
  */
 async function parsePDF(buffer: Buffer): Promise<string> {
-  // Dynamic import (loaded on demand). The @ts-expect-error + fallback handle
-  // this library's messy CommonJS/ESM exports — a common Node interop headache.
-  // @ts-expect-error - pdf-parse types are inconsistent with its CJS/ESM exports
-  const pdfParse = (await import('pdf-parse')).default || (await import('pdf-parse'));
-  const data = await (pdfParse as any)(buffer);
-  return data.text;
+  // pdf-parse v2 exposes a PDFParse class (no default callable export).
+  const { PDFParse } = await import('pdf-parse');
+  const parser = new PDFParse({ data: new Uint8Array(buffer) });
+  try {
+    const result = await parser.getText();
+    return result.text;
+  } finally {
+    await parser.destroy();
+  }
 }
 
 /**

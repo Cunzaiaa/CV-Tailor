@@ -1,41 +1,70 @@
-<<<<<<< HEAD
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CV Tailor 🎯
 
-## Getting Started
+**CV Tailor** is an AI-powered web application that helps job seekers instantly tailor their existing CV and generate a custom cover letter for specific job advertisements. 
 
-First, run the development server:
+Instead of starting from scratch or sending generic applications, CV Tailor analyzes your professional experience and intelligently aligns it with the exact requirements of your target role.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### 💡 Core Principle: Truthfulness Over Completeness
+Unlike many AI resume builders that hallucinate or exaggerate skills, CV Tailor operates on a strict rule: **never invent information**. The AI is strictly instructed to only reorganize, emphasize, and improve the presentation of the experience *actually present* in your original CV. If critical information is missing, the application will pause and ask you targeted clarification questions rather than making assumptions.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
+- **Smart CV Extraction:** Upload your existing CV in PDF or DOCX format, and the system extracts and structures your experience automatically.
+- **Job Ad Scraping:** Simply paste a URL to a job advertisement. The system extracts the core responsibilities and requirements, bypassing ads and clutter (includes a manual paste fallback for bot-protected job boards).
+- **Gap Analysis & Interactive Q&A:** The AI compares your CV to the job ad. If it finds missing requirements that you might actually possess but forgot to list, it asks you follow-up questions to gather that context.
+- **Tailored Output:** Generates a highly targeted, professional CV and matching Cover Letter optimized for the specific role.
+- **Client-Side PDF Generation:** High-quality, ATS-friendly A4 PDFs are generated entirely in your browser using a clean, modern template.
+- **Privacy First:** No accounts, no database, no tracking. Your documents are processed server-side in memory and never saved to a database.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## 🛠️ Tech Stack
+- **Framework:** Next.js (App Router) + React 19
+- **Styling:** Tailwind CSS + shadcn/ui (Lucide icons)
+- **AI Engine:** Google Gemini API (`gemini-2.0-flash`) with structured JSON outputs.
+- **Document Parsing:** `pdf-parse` (PDF) and `mammoth` (DOCX).
+- **Web Scraping:** Mozilla Readability + JSDOM.
+- **Data Validation:** Zod schemas to ensure strict, safe AI responses.
+- **PDF Generation:** `@react-pdf/renderer`
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🚀 Getting Started
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Prerequisites
+- Node.js 18+
+- A Google Gemini API key (Get one free at [Google AI Studio](https://aistudio.google.com/))
 
-## Deploy on Vercel
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/cv-tailor.git
+   cd cv-tailor
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-=======
-# CV-Tailor
-CV Tailor is an AI web app that instantly customizes your CV and generates targeted cover letters for specific job ads. By analyzing your professional background, it aligns your skills and experience directly with the employer's requirements, eliminating generic applications.
->>>>>>> 3eea3279fcaf8666866e0076293634df214a630a
+3. Configure your environment:
+   Copy the example environment file and add your Gemini API key:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Open `.env.local` and set:
+   ```env
+   GEMINI_API_KEY=your_actual_api_key_here
+   ```
+
+4. Start the development server:
+   ```bash
+   npm run dev
+   ```
+   Navigate to `http://localhost:3000` to start tailoring your applications!
+
+---
+
+## 📄 License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

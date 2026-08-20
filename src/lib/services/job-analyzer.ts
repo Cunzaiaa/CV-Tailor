@@ -7,8 +7,14 @@ import { buildJobExtractionPrompt } from '@/lib/prompts/job-extraction';
 import { ParsedJobSchema } from '@/lib/schemas/job';
 import type { ParsedJob } from '@/types';
 import { safeJsonParse } from '@/lib/utils';
+import { cacheKey, getOrCompute } from '@/lib/cache';
 
-export async function analyzeJob(jobText: string): Promise<ParsedJob> {
+// Cached by job text so the questions round-trip reuses the first analysis.
+export function analyzeJob(jobText: string): Promise<ParsedJob> {
+  return getOrCompute(cacheKey('analyzeJob', jobText), () => runAnalyzeJob(jobText));
+}
+
+async function runAnalyzeJob(jobText: string): Promise<ParsedJob> {
   const prompt = buildJobExtractionPrompt(jobText);
   const rawResponse = await geminiGenerate(prompt);
 
