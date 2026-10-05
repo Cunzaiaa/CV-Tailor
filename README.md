@@ -22,7 +22,7 @@ Unlike many AI resume builders that hallucinate or exaggerate skills, CV Tailor 
 ## 🛠️ Tech Stack
 - **Framework:** Next.js (App Router) + React 19
 - **Styling:** Tailwind CSS + shadcn/ui (Lucide icons)
-- **AI Engine:** Google Gemini API (`gemini-2.0-flash`) with structured JSON outputs.
+- **AI Engine:** Google Gemini API (`gemini-3.6-flash`) with structured JSON outputs.
 - **Document Parsing:** `pdf-parse` (PDF) and `mammoth` (DOCX).
 - **Web Scraping:** Mozilla Readability + JSDOM.
 - **Data Validation:** Zod schemas to ensure strict, safe AI responses.

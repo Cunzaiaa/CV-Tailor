@@ -21,6 +21,7 @@ export function JobStep({ onJobReady }: JobStepProps) {
   const [url, setUrl] = useState('');              // The URL the user typed
   const [fetching, setFetching] = useState(false); // Spinner while scraping
   const [error, setError] = useState<string | null>(null);
+  const [fetchReason, setFetchReason] = useState<string | null>(null);
   const [showPaste, setShowPaste] = useState(false); // Show the paste textarea?
   const [pastedJob, setPastedJob] = useState('');     // Text in the paste box
   const [fetchFailed, setFetchFailed] = useState(false); // Scraping failed → show fallback
@@ -35,6 +36,7 @@ export function JobStep({ onJobReady }: JobStepProps) {
 
     setFetching(true);
     setError(null);
+    setFetchReason(null);
     setFetchFailed(false);
 
     try {
@@ -47,6 +49,7 @@ export function JobStep({ onJobReady }: JobStepProps) {
 
       if (!res.ok) {
         setError(data.error ?? 'Failed to fetch job advertisement.');
+        setFetchReason(data.error ?? null);
         setFetchFailed(true);
         return;
       }
@@ -55,6 +58,7 @@ export function JobStep({ onJobReady }: JobStepProps) {
       // (e.g. the site blocked it). In that case, ask the user to paste instead.
       if (data.fallbackRequired || !data.success) {
         setFetchFailed(true);
+        setFetchReason(data.errorReason ?? null);
         setShowPaste(true);
         setError(null);
         return;
@@ -85,6 +89,7 @@ export function JobStep({ onJobReady }: JobStepProps) {
   const reset = () => {
     setJobReady(false);
     setFetchFailed(false);
+    setFetchReason(null);
     setShowPaste(false);
     setError(null);
     setPastedJob('');
@@ -155,9 +160,11 @@ export function JobStep({ onJobReady }: JobStepProps) {
                 We couldn&apos;t read this job advertisement automatically.
               </p>
               <p>
-                Some job sites block automated access. Please paste the job description below
-                — the analysis will work just as well.
+                {url.toLowerCase().includes('linkedin.com')
+                  ? 'LinkedIn often requires a signed-in browser or blocks automated requests. Open the listing in your browser and paste the job description below.'
+                  : 'Some job sites block automated access. Please paste the job description below; the analysis will work just as well.'}
               </p>
+              {fetchReason && <p className="mt-1 opacity-80">Details: {fetchReason}</p>}
             </div>
           )}
 
