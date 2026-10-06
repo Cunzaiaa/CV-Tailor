@@ -17,7 +17,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 // Each service encapsulates one AI task (like injected Spring @Services).
 import { analyzeCV } from '@/lib/services/cv-analyzer';
-import { analyzeJob } from '@/lib/services/job-analyzer';
+import {
+  analyzeJob,
+  hasJobSpecificDetails,
+  JOB_DETAILS_MISSING_ERROR,
+} from '@/lib/services/job-analyzer';
 import { matchCVToJob } from '@/lib/services/matcher';
 import { generateTailoredCV } from '@/lib/services/cv-generator';
 import { generateCoverLetter } from '@/lib/services/cover-letter-generator';
@@ -66,6 +70,13 @@ export async function POST(request: NextRequest): Promise<NextResponse> {
       analyzeCV(cvText),
       analyzeJob(jobContent),
     ]);
+
+    if (!hasJobSpecificDetails(parsedJob)) {
+      return NextResponse.json(
+        { error: JOB_DETAILS_MISSING_ERROR },
+        { status: 422 }
+      );
+    }
 
     // ── Step 3: Match CV against job ────────────────────────────────────────
     const matching = await matchCVToJob(parsedCV, parsedJob, answers);
